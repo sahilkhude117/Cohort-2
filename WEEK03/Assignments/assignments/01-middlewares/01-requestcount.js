@@ -16,6 +16,7 @@ let requestCountMiddleware = function(req, res, next) {
   requestCount++;
   next();
 }
+
 app.use(requestCountMiddleware);
 // Done by me
 
