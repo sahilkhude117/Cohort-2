@@ -20,11 +20,16 @@ setInterval(() => {
 
 // Done by me
 let rateLimiter = (req,res,next)=> {
-    numberOfRequestsForUser = {...numberOfRequestsForUser, [req.headers['user-id']]:numberOfRequestsForUser[req.headers['user-id']]?numberOfRequestsForUser[req.headers['user-id']]+1 : 1};
-
-    if(numberOfRequestsForUser[req.headers['user-id']]>5){
-      res.status(404).json({msg:'Too many requests'});
-    } else {
+    const userId = req.headers["user-id"];
+    if(numberOfRequestsForUser[userId]){
+      numberOfRequestsForUser[userId]  = numberOfRequestsForUser[userId] + 1;
+      if(numberOfRequestsForUser[userId] > 5){
+        res.status(404).send("No Entry");
+      } else{
+        next();
+      } 
+    } else{
+      numberOfRequestsForUser[userId];
       next();
     }
 }
