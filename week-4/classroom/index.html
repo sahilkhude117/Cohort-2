@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        //debouncing and throtlling
+        let timeout;
+        function debouncePopulateDiv(){
+                //delay call to populateDiv until i have not been called fro 100ms
+                //and ive been called atleast once
+                clearTimeout(timeout);
+                setTimeout(function(){
+                    populateDiv();
+                },1000)
+        }
+
+        function populateDiv() {
+            const a = document.getElementById("firstnum").value;
+            const b = document.getElementById("secondnum").value;
+            const element = document.getElementById("finalsum");
+            element.innerHTML = parseInt(a) + parseInt(b) ;
+
+            // sending request to backend
+            // fetch("https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b)
+            //     .then(function(response){
+            //         response.text()
+            //             .then(function(ans){
+            //                 document.getElementById("finalsum").innerHTML = ans;
+            //             })
+            //     });
+        }
+
+        // same same but diffrent
+        async function populateDiv2() {
+            const a = document.getElementById("firstnum").value;
+            const b = document.getElementById("secondnum").value;
+
+            const response = await ("https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b)
+            const ans  = await response.text()
+            document.getElementById("finalsum").innerHTML = ans;
+        }
+    </script>
+</head>
+<body>
+    <input oninput="debouncePopulateDiv()" type="text" placeholder="First Number" class="container" id="firstnum"/> <br> <br>
+    <input oninput="debouncePopulateDiv()" type="text" placeholder="Second Number" id="secondnum"/> <br> <br>
+    <div id="finalsum"></div>
+</body>
+</html>
