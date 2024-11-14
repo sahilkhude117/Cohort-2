@@ -8,7 +8,7 @@ app.use(express.json());
 
 //Database Connection
 mongoose.connect(
-    "mongodb+srv://sahilkhude11:LBh801uQVDNOqRUM@mongo-cluster.am4oa.mongodb.net/user_app",
+    ,
 );
 
 const User = mongoose.model("User", {
