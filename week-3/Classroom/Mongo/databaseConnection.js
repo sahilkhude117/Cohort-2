@@ -8,7 +8,7 @@ app.use(express.json());
 
 //Database Connection
 mongoose.connect(
-    "mongodb+srv://sahilkhude11:LBh801uQVDNOqRUM@mongo-cluster.am4oa.mongodb.net/user_app",
+    "mongo Url"
 );
 
 const User = mongoose.model("User", {
@@ -30,7 +30,6 @@ app.post("/signin", async function(req,res){
             msg: "User Already Exists"
         });
     }
-
 
     const user = new User ({
         email : email,

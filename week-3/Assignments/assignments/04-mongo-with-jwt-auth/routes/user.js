@@ -6,6 +6,7 @@ const z = require("zod");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { Course } = require("../db");
+const {JWT_SECRET} = require("../config")
 
 const userSchema = z.object({
   username: z.string(),
@@ -26,7 +27,7 @@ router.post("/signup", async (req, res) => {
       const response = await User.create({ username, password });
       const token = jwt.sign(
         { id: response.id, username: response.username },
-        process.env.JWT_SECRET,
+        JWT_SECRET,
         { expiresIn: "365d" }
       );
       res.status(201).json({ message: "User created successfully", token });
@@ -49,7 +50,7 @@ router.post("/signin", async (req, res) => {
       if (isPasswordCorrect) {
         const token = jwt.sign(
           { id: admin.id, username: admin.username },
-          process.env.JWT_SECRET,
+          JWT_SECRET,
           { expiresIn: "365d" }
         );
         res

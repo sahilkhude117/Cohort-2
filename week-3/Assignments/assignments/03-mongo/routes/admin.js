@@ -17,20 +17,19 @@ const courseSchema = z.object({
 });
 
 // Admin Routes
-router.post("/signup", async (req, res) => {
-  // Implement admin signup logic
+router.post("/signup",async (req,res)=>{
   const zodResponse = adminSchema.safeParse(req.body);
-  if (zodResponse.data) {
-    try {
+  if(zodResponse){
+    try{
       const response = await Admin.create(req.body);
-      res.status(201).json({ message: 'Admin created successfully', response })
-    } catch (error) {
+      res.status(201).json({ msg : "Admin created successfully", response })
+    } catch (error){
       console.log(error);
     }
-  } else {
-    res.status(400).send("Invalid input");
+  } else{
+    res.status(400).json({msg: "Invalid Input"})
   }
-});
+})
 
 router.post("/courses", adminMiddleware, async (req, res) => {
   // Implement course creation logic
@@ -54,7 +53,7 @@ router.get("/courses", adminMiddleware, async (req, res) => {
     const response = await Course.find();
     res.status(200).json({ message: 'Courses fetched successfully', response })
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
   }
 });
 

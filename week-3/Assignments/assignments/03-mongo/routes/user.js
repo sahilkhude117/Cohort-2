@@ -37,21 +37,41 @@ router.get('/courses', async (req, res) => {
 });
 
 
-// courId: 658bfdd1fb1bbb7032458d9b
+// courId: 673a14caebecc205bd7630c7
 router.post('/courses/:courseId', userMiddleware, async (req, res) => {
     // Implement course purchase logic
-    const { courseId } = req.params;
-    console.log(courseId);
+    const courseId = req.params.courseId;
+    const username = req.headers.username;
     try {
-        const response = await Course.findById(courseId);
-        res.status(200).json({ message: `Course found with id-${courseId}`, response })
-    } catch (error) {
-        throw new Error(error);
+      await User.updateOne({
+        username: username
+      },{
+        "$push":{
+          purchasedCourses: courseId
+        }
+      })
+    } catch(e){
+      console.log(e);
     }
+    res.json({
+      msg:"Purchase Complete"
+    })
 });
 
-router.get('/purchasedCourses', userMiddleware, (req, res) => {
+router.get('/purchasedCourses', userMiddleware, async (req, res) => {
     // Implement fetching purchased courses logic
+    const user = await User.findOne({
+      username:req.headers.username
+    });
+    user.purchasedCourse
+    const courses = await Course.find({
+      _id:{
+        "$in" : user.purchasedCourses
+      }
+    })
+    res.json({
+      courses : courses
+    })
 });
 
 module.exports = router

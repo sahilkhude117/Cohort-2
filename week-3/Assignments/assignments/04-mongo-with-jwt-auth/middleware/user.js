@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const {JWT_SECRET} = require("../config")
 
 function userMiddleware(req, res, next) {
     // Implement user auth logic
@@ -7,7 +8,7 @@ function userMiddleware(req, res, next) {
     if(authorization){
         const token = authorization.split(" ")[1];
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token,JWT_SECRET);
             if(decoded){
                 req.user = decoded;
                 next();

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+const { MONGO_URL } = require("../config");
 
 // Connect to MongoDB
 const connectDb = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(MONGO_URL);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.log(error);
@@ -42,8 +43,8 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   purchasedCourses: {
-    type: Array,
-    default: [],
+    type: mongoose.Schema.Types.ObjectId,
+    ref : 'Course'
   },
 });
 

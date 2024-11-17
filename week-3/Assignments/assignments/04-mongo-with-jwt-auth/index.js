@@ -4,8 +4,11 @@ const app = express();
 const adminRouter = require("./routes/admin")
 const userRouter = require("./routes/user");
 const { connectDb } = require('./db');
-const errorHandlerMiddleware = require('./middleware/error-handler');
+const errorHandlerMiddleware = require('./middleware/global-catch');
+const { model } = require('mongoose');
 require('dotenv').config();
+
+
 
 // Middleware for parsing request bodies
 app.use(bodyParser.json());
@@ -26,3 +29,4 @@ app.listen(PORT, () => {
     connectDb();
     console.log(`Server is running on port ${PORT}`);
 });
+

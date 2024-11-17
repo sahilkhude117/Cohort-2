@@ -20,7 +20,7 @@ app.use((err,req,res,next)=> {
     res.status(500).json({message: err.message});
 })
 
-const PORT = 2000;
+const PORT = 3000;
 
 app.listen(PORT, () => {
     connectDb();
