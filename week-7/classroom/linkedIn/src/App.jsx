@@ -1,7 +1,6 @@
 import './App.css'
-import { RecoilRoot, useRecoilValue } from 'recoil'
+import { RecoilRoot, useRecoilStateLoadable,useRecoilValue } from 'recoil'
 import { notifications, totalNotificationsSelector } from './atoms/atoms'
-import { useEffect } from 'react';
 
 function App() {
   return <RecoilRoot>
@@ -10,21 +9,27 @@ function App() {
 }
 
 function MainApp(){
-  const [networkCount, setNetworkCount] = useRecoilState(notifications);
+  const [networkCount, setNetworkCount] = useRecoilStateLoadable(notifications);
   const totalNotificationCount = useRecoilValue(totalNotificationsSelector);
 
-  return (
-    <div>
-      <button>Home</button>
-
-      <button>My Network ({networkCount.network})</button>
-      <button>Jobs ({networkCount.jobs})</button>
-      <button>Messagin ({networkCount.messaging})</button>
-      <button>Notification ({networkCount.notifications})</button>
-
-      <button>Me ({totalNotificationCount})</button>
+  if(networkCount.state === "loading"){
+    return <div>
+      Loading...
     </div>
-  )
+  }else {
+    return (
+      <div>
+        <button>Home</button>
+  
+        <button>My Network ({networkCount.network})</button>
+        <button>Jobs ({networkCount.jobs})</button>
+        <button>Messagin ({networkCount.messaging})</button>
+        <button>Notification ({networkCount.notifications})</button>
+  
+        <button>Me ({totalNotificationCount})</button>
+      </div>
+    )
+  }
 }
 
 export default App;

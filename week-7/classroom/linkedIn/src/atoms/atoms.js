@@ -7,8 +7,8 @@ export const notifications = atom({
     default: selector({
         key: "networkAtomSelector",
         get: async () => {
-            const res = await axios.get("https://sum-server.100xdevs.com/notifications")
-            return res.data
+            const res = await axios.get("https://sum-server.100xdevs.com/notifications");
+            return res.data;
         }
     })
 });
