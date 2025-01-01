@@ -2,6 +2,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 
+const SECRET_KEY = "my secret"
 const app = express();
 const PORT = 3000;
 
@@ -40,8 +41,25 @@ app.post('/generate-otp',otpLimiter, (req:Request, res:Response) => {
 });
 
 // Endpoint to reset password
-app.post('/reset-password',passwordResetLimiter, (req, res) => {
-  const { email, otp, newPassword } = req.body;
+app.post('/reset-password',passwordResetLimiter, async (req, res) => {
+  const { email, otp, newPassword,token } = req.body;
+
+  let formData = new FormData();
+	formData.append('secret', SECRET_KEY);
+	formData.append('response', token);
+
+  const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+	const result = await fetch(url, {
+		body: formData,
+		method: 'POST',
+	});
+    
+  const challengeSucceeded = (await result.json()).success;
+
+  if (!challengeSucceeded) {
+    return res.status(403).json({ message: "Invalid reCAPTCHA token" });
+  }
+
   if (!email || !otp || !newPassword) {
     return res.status(400).json({ message: "Email, OTP, and new password are required" });
   }

@@ -10,7 +10,7 @@ function App() {
       <input placeholder='OTP'/>
       <input placeholder='New Password'/>
 
-      <Turnstile onSuccess={(e)=>{
+      <Turnstile onSuccess={(token)=>{
         setToken(token);
       }} siteKey='my cloud flare key'/>
 
